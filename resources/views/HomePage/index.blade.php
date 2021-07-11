@@ -8,8 +8,8 @@
     <base href="{{ asset('') }}">
     <link href='http://fonts.googleapis.com/css?family=Dosis:300,400' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="assets/dest/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/dest/vendors/colorbox/example3/colorbox.css">
@@ -27,6 +27,19 @@
     <div class="rev-slider">
         <div class="fullwidthbanner-container">
             <div class="fullwidthbanner">
+                <br>
+                @if (session('flag'))
+                    @if (session('warning'))
+                    <div class="alert alert-{{ Session::get('flag') }}" style="text-align: center" role="alert">
+                      {{ Session::get('warning') }}
+                    </div>
+                    @else
+                    <div class="alert alert-{{ Session::get('flag') }}" style="text-align: center" role="alert">
+                        {{ Session::get('notice') }}
+                    </div>
+                    @endif
+                @endif
+                <br>
                 <div class="bannercontainer">
                     <div class="banner">
                         <ul>
@@ -78,7 +91,7 @@
                                 @foreach ($newProduct as $item)
                                     <div class="col-sm-3">
                                         <div class="single-item" style="padding-bottom: 20px">
-                                            @if ($item->promotion_price!=0)
+                                            @if ($item->promotion_price != 0)
                                                 <div class="ribbon-wrapper">
                                                     <div class="ribbon sale">Sale</div>
                                                 </div>
@@ -94,18 +107,23 @@
                                                 <p class="single-item-price">
 
 
-                                                    @if ($item->promotion_price==0)
-                                                        <span>{{ $item->unit_price }}</span>
+                                                    @if ($item->promotion_price == 0)
+                                                        <span>{{ number_format($item->unit_price) }} VNĐ</span>
                                                     @else
-                                                        <span class="flash-del">{{ $item->unit_price }}</span>
-                                                        <span class="flash-sale">{{ $item->promotion_price }}</span>
+                                                        <span
+                                                            class="flash-del">{{ number_format($item->unit_price) }}
+                                                            VNĐ</span>
+                                                        <span
+                                                            class="flash-sale">{{ number_format($item->promotion_price) }}
+                                                            VNĐ</span>
                                                     @endif
 
 
                                                 </p>
                                             </div>
                                             <div class="single-item-caption">
-                                                <a class="add-to-cart pull-left" href="{{ route('addtocart', $item->id) }}"><i
+                                                <a class="add-to-cart pull-left"
+                                                    href="{{ route('addtocart', $item->id) }}"><i
                                                         class="fa fa-shopping-cart"></i></a>
                                                 <a class="beta-btn primary"
                                                     href="{{ route('detail-product', $item->id) }}">Details <i
@@ -118,7 +136,7 @@
 
 
                             </div>
-                            <div class="row">{{$newProduct->links("pagination::bootstrap-4")}}</div>
+                            <div class="row">{{ $newProduct->links('pagination::bootstrap-4') }}</div>
                         </div> <!-- .beta-products-list -->
 
                         <div class="space50">&nbsp;</div>
@@ -134,7 +152,7 @@
                                 @foreach ($products as $item)
                                     <div class="col-sm-3">
                                         <div class="single-item" style="padding-bottom: 20px">
-                                            @if ($item->promotion_price!=0)
+                                            @if ($item->promotion_price != 0)
                                                 <div class="ribbon-wrapper">
                                                     <div class="ribbon sale">Sale</div>
                                                 </div>
@@ -148,19 +166,22 @@
                                                 <p class="single-item-title">{{ $item->name }}</p>
                                                 <p class="single-item-price">
 
-
-                                                    @if ($item->promotion_price==0)
-                                                        <span>{{ $item->unit_price }}</span>
+                                                    @if ($item->promotion_price == 0)
+                                                        <span>{{ number_format($item->unit_price) }} VNĐ</span>
                                                     @else
-                                                        <span class="flash-del">{{ $item->unit_price }}</span>
-                                                        <span class="flash-sale">{{ $item->promotion_price }}</span>
+                                                        <span class="flash-del">{{ number_format($item->unit_price) }}
+                                                            VNĐ</span>
+                                                        <span
+                                                            class="flash-sale">{{ number_format($item->promotion_price) }}
+                                                            VNĐ</span>
                                                     @endif
 
 
                                                 </p>
                                             </div>
                                             <div class="single-item-caption">
-                                                <a class="add-to-cart pull-left" href="{{ route('addtocart', $item->id) }}"><i
+                                                <a class="add-to-cart pull-left"
+                                                    href="{{ route('addtocart', $item->id) }}"><i
                                                         class="fa fa-shopping-cart"></i></a>
                                                 <a class="beta-btn primary"
                                                     href="{{ route('detail-product', $item->id) }}">Details <i
@@ -170,10 +191,10 @@
                                         </div>
                                     </div>
                                 @endforeach
-                               
+
 
                             </div>
-                            <div class="row">{{$products->links("pagination::bootstrap-4")}}</div>
+                            <div class="row">{{ $products->links('pagination::bootstrap-4') }}</div>
 
                         </div> <!-- .beta-products-list -->
                     </div>

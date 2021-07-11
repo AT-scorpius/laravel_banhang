@@ -26,7 +26,9 @@
                 <h6 class="inner-title">Đặt hàng</h6>
                 <br>
                 @if (Session::has('checkout-success'))
-                <div class="alert alert-success" role="alert">{{ Session::get('checkout-success') }}</div>
+                    <div class="alert alert-success" role="alert">{{ Session::get('checkout-success') }}</div>
+                @elseif(Session::has('checkout-error'))
+                    <div class="alert alert-danger" role="alert">{{ Session::get('checkout-error') }}</div>
                 @endif
             </div>
             <div class="pull-right">
@@ -47,10 +49,15 @@
                     <div class="col-sm-6">
                         <h4>Đặt hàng</h4>
                         <div class="space20">&nbsp;</div>
-
+                        @if (Auth::check())
+                            {{ session(['user' => Auth::user()]) }}
+                        @elseif(Session::has('user'))
+                        {{ Session::forget('user') }}
+                        @endif
                         <div class="form-block">
                             <label for="name">Họ tên*</label>
-                            <input type="text" name="name" placeholder="Họ tên" required>
+                            <input type="text" name="name" placeholder="Họ tên" value="{{ Session::has('user') ? Session::get('user')->full_name : '' }}"
+                                required>
                         </div>
                         <div class="form-block">
                             <label>Giới tính </label>
@@ -63,18 +70,18 @@
 
                         <div class="form-block">
                             <label for="email">Email*</label>
-                            <input type="email" name="email" required placeholder="expample@gmail.com">
+                            <input type="email" name="email"  placeholder="expample@gmail.com" value="{{ Session::has('user') ? Session::get('user')->email : '' }}" required>
                         </div>
 
                         <div class="form-block">
                             <label for="adress">Địa chỉ*</label>
-                            <input type="text" name="address" placeholder="Street Address" required>
+                            <input type="text" name="address" placeholder="Street Address" value="{{ Session::has('user') ? Session::get('user')->address : '' }}" required>
                         </div>
 
 
                         <div class="form-block">
                             <label for="phone">Điện thoại*</label>
-                            <input type="text" name="phone_number" required>
+                            <input type="text" name="phone_number" value="{{ Session::has('user') ? Session::get('user')->phone : '' }}" required>
                         </div>
 
                         <div class="form-block">
@@ -108,7 +115,8 @@
                                                                     không khuyến mãi </span>
                                                             @else
                                                                 {{ number_format($product['item']['promotion_price']) }}
-                                                            @endif VNĐ</span>
+                                                            @endif VNĐ
+                                                        </span>
                                                         <span class="color-gray your-order-info">Số lượng:
                                                             {{ $product['qty'] }}</span>
                                                     </div>
@@ -129,8 +137,11 @@
                                     </div>
                                 </div>
                             @else
-                                <div class="alert alert-danger" role="alert">Hiện tại chưa có sản phẩm nào trong giỏ
-                                    hàng</div>
+                                <br>
+                                <div class="alert alert-danger" role="alert">
+                                    Hiện tại chưa có sản phẩm nào trong giỏ hàng <br>
+                                    Bạn có thể mua thêm sản phẩm <a href="{{ route('index') }}">tại đây!</a>
+                                </div>
                             @endif
                             <div class="your-order-head">
                                 <h5>Hình thức thanh toán</h5>
@@ -170,8 +181,7 @@
                                 </ul>
                             </div>
 
-                            <div class="text-center"><button class="beta-btn primary" type="submit">Đặt hàng <i
-                                        class="fa fa-chevron-right"></i></button></div>
+                            <div class="text-center"><button class="beta-btn primary" type="submit">Đặt hàng <i class="fa fa-chevron-right"></i></button></div>
                         </div> <!-- .your-order -->
                     </div>
                 </div>

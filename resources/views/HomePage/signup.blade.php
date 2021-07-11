@@ -45,7 +45,7 @@
                         <div class="space20">&nbsp;</div>
                         <div class="notification">
                             @if (session('success'))
-                                <div class="alert alert-success" role="alert">
+                                <div class="alert alert-success" style="text-align: center" role="alert">
                                     {{ Session::get('success') }}
                                 </div>
                             @endif

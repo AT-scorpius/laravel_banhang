@@ -18,7 +18,8 @@ class UserController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('index');
+        return redirect()->route('login')
+        ->with(['flag'=>'warning','warning'=>'Bạn đã đăng xuất!']);;
     }
     public function postLogin(Request $request)
     {
@@ -83,8 +84,10 @@ class UserController extends Controller
         $user->phone=$request->phone;
         $user->address=$request->address;
         $user->password=Hash::make($request->password);
+        // dd( $user->password);
+        $user->role=2;
         $user->save();
         // User::create($request->all());
-        return redirect()->back()->with('success','Đã tạo tài khoản thành công');
+        return redirect()->route('login')->with(['flag'=>'success','notice'=>'Đã tạo tài khoản thành công: Xin mời quý khách đăng nhập']);
     }
 }

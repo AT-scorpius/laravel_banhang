@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
-    
+
     public function index()
     {
         $slides = Slide::all();
@@ -34,7 +34,7 @@ class ProductController extends Controller
         $slNew = count($ProfType);
         return view('HomePage.type-product', compact('type', 'ProfType'));
     }
-   
+
     //thêm 1 sản phẩm có id cụ thể vào model cart rồi lưu dữ liệu của model cart vào 1 session có tên cart (session được truy cập bằng thực thể Request)
     public function addToCart(Request $request, $id)
     {
@@ -63,69 +63,80 @@ class ProductController extends Controller
         $oldCart = Session('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
         $cart->removeItem($id);
-        
-        if(count($cart->items)>0){
+
+        if (count($cart->items) > 0) {
             Session::put('cart', $cart);
-        }else{
+        } else {
             Session::forget('cart');
         }
         return redirect()->back();
     }
-     public function checkout()
+    public function checkout()
     {
         return view('HomePage.checkout');
     }
 
-    public function postCheckout(Request $request){
-        if($request->input('payment_method')!="VNPAY"){
-            $cart=Session::get('cart');
-            $customer=new Customer();
-            $customer->name=$request->input('name');
-            $customer->gender=$request->input('gender');
-            $customer->email=$request->input('email');
-            $customer->address=$request->input('address');
-            $customer->phone_number=$request->input('phone_number');
+    public function postCheckout(Request $request)
+    {
+        if (Session::has('cart')) {
+            if ($request->input('payment_method') != "VNPAY") {
+                $cart = Session::get('cart');
+                $customer = new Customer();
+                $customer->name = $request->input('name');
+                $customer->gender = $request->input('gender');
+                $customer->email = $request->input('email');
+                $customer->address = $request->input('address');
+                $customer->phone_number = $request->input('phone_number');
 
-            if($request->input('notes')!==null){
-                $customer->note=$request->input('notes');
-            }else{
-                $customer->note="No notes!";
+                if ($request->input('notes') !== null) {
+                    $customer->note = $request->input('notes');
+                } else {
+                    $customer->note = "Không có ghi chú";
+                }
+
+                $customer->save();
+
+                $bill = new Bill();
+                $bill->id_customer = $customer->id;
+                $bill->date_order = date('Y-m-d');
+                $bill->total = $cart->totalPrice;
+                $bill->payment = $request->input('payment_method');
+                $bill->note = $request->input('notes');
+                if ($request->input('notes') !== null) {
+                    $bill->note = $request->input('notes');
+                } else {
+                    $bill->note = "Không có ghi chú";
+                }
+
+                $bill->status = "waiting";
+                $bill->save();
+
+                foreach ($cart->items as $key => $value) {
+                    $bill_detail = new BillDetail();
+                    $bill_detail->id_bill = $bill->id;
+                    $bill_detail->id_product = $key;
+                    $bill_detail->quantity = $value['qty'];
+                    $bill_detail->unit_price = $value['price'] / $value['qty'];
+                    $bill_detail->save();
+                }
+                Session::forget('cart');
+                return redirect()->back()->with('checkout-success', 'Đặt hàng thành công: Đơn hàng đang chờ xác nhận từ cửa hàng!');
+            } else { //nếu thanh toán là vnpay
+                $cart = Session::get('cart');
+                $cus_data=$request->all();
+                // Session::put('data_bill', $cus_data);
+                session(['cus_data' => $cus_data]);
+                // dd( $data_bill);
+                return view('VNPAY/vnpay-index', compact('cart'));
+                
             }
-           
-            $customer->save();
-    
-            $bill=new Bill();
-            $bill->id_customer=$customer->id;
-            $bill->date_order=date('Y-m-d');
-            $bill->total=$cart->totalPrice;
-            $bill->payment=$request->input('payment_method');
-            $bill->note=$request->input('notes');
-            $bill->save();
-    
-            foreach($cart->items as $key=>$value)
-            {
-                $bill_detail=new BillDetail();
-                $bill_detail->id_bill=$bill->id;
-                $bill_detail->id_product=$key;
-                $bill_detail->quantity=$value['qty'];
-                $bill_detail->unit_price=$value['price']/$value['qty'];
-                $bill_detail->save();
-            }
-            Session::forget('cart');
-            return redirect()->back()->with('checkout-success','Đặt hàng thành công');
-    
+        } else {
+            return redirect()->back()->with('checkout-error', 'Đặt hàng không thành công do bạn chưa có sản phẩm thanh toán');
         }
-        else {//nếu thanh toán là vnpay
-            $cart=Session::get('cart');
-            return view('/vnpay-index',compact('cart'));
-        }
-        }
+    }
     public function show($id)
     {
         $product = Product::find($id);
         return view('HomePage.detail', compact('product'));
     }
-
-  
-
 }
