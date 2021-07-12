@@ -92,6 +92,7 @@ Route::prefix('admin')->middleware(['middleware' => 'adminLogin'])->group(functi
         Route::get('cancelled', [OrderController::class, 'cancelled'])->name('order.cancelled');
         Route::get('cancelled/{id}', [OrderController::class, 'setCancelled'])->name('order.setCancelled');
         Route::get('returnOrder/{id}', [OrderController::class, 'returnOrder'])->name('order.return');
+        Route::get('deleted/{id}', [OrderController::class, 'returnOrder'])->name('order.deleted');
     });
     // Route::middleware(['auth', 'second'])->group(function () {
 

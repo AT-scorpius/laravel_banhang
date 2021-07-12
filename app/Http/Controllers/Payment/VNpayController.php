@@ -87,23 +87,6 @@ class VNpayController extends Controller
             // dd($cus_data);
             //lay du lieu vnpay tra ve
             $vnpay_Data = $request->all();
-            // ……..(xong bước 9 thì quay lại hoàn chỉnh code này để lưu dl thanh 
-            //toán vào bảng payments.
-            //truyen inputData vao trang vnpay_return
-            //             array:12 [▼
-            //   "vnp_Amount" => "12000000"
-            //   "vnp_BankCode" => "NCB"
-            //   "vnp_BankTranNo" => "20210711145634"
-            //   "vnp_CardType" => "ATM"
-            //   "vnp_OrderInfo" => "Thanh toán sản phẩm từ cửa hàng"
-            //   "vnp_PayDate" => "20210711145630"
-            //   "vnp_ResponseCode" => "00"
-            //   "vnp_TmnCode" => "ZVT1MS1I"
-            //   "vnp_TransactionNo" => "13542229"
-            //   "vnp_TxnRef" => "20210711075613"
-            //   "vnp_SecureHashType" => "SHA256"
-            //   "vnp_SecureHash" => "85ea07421d3e06c89a722c36bd81a1ec455e63dcfc2679a167633499744e16ce"
-            // ]
             $payment = new Payment();
             $payment->order_id = $vnpay_Data['vnp_PayDate'];
             $payment->thanh_vien = $customer->name;

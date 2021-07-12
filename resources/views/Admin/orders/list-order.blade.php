@@ -47,6 +47,13 @@
                             </small>
                         </h1>
                     </div>
+                    <br>
+                    @if (isset($status_mail))
+                        <div class="alert alert-{{ $status_mail }}" role="alert">
+                            {{ $mes_content }}
+                        </div>
+                    @endif
+                    <br>
                     <!-- /.col-lg-12 -->
                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                         <thead>
@@ -111,6 +118,10 @@
                                         <td class="center"><i class="fa fa-pencil fa-fw"></i> <a
                                                 href="{{ route('order.return', $item['id']) }}">return</a>
                                         </td>
+                                        <td class="center text-danger"> <strong><i class="fa fa-trash-o  fa-fw"></i> <a
+                                            class="text-danger"        href="{{ route('order.return', $item['id']) }}">delete</a></strong>
+                                        </td>
+
                                     @elseif(($status_code == 0))
                                         <td class="text-warning">Hiện đang trong danh sách xem!</td>
                                     @else

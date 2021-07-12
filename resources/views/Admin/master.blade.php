@@ -152,6 +152,11 @@
                                     {{ Session::get('notice') }}
                                 </div>
                             @endif
+                            @if (isset($status_mail))
+                            <div class="alert alert-{{ $status_mail }}" role="alert">
+                                {{ $mes_content }}
+                            </div>
+                            @endif
                         </li>
                     </ul>
                 </div>

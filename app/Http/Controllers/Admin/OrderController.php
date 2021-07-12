@@ -60,31 +60,37 @@ class OrderController extends Controller
 
     public function setConfirmed($id)
     {
-        // $order=$request->input('cancel');
         $order = Bill::find($id);
         $user = Customer::where('id', $order->id_customer)->first();
-        // dd($order);
         $message = [
-            'type' => 'Email thông báo đặt hàng thành công',
+            'type' => 'Email thông báo ĐÃ ĐẶT HÀNG THÀNH CÔNG',
             'thanks' => 'Cảm ơn ' . $user->name . ' đã đặt hàng.',
             'id_bill' => $order->id,
-            'content' => 'Admin đã xác nhận đơn hàng và giao hàng sớm nhất có thể.',
+            'content' => 'Admin đã xác nhận đơn hàng và giao hàng sớm nhất có thể. Liên hệ 0799101759 nếu bạn có bất kì vấn đề gì!',
         ];
-        Mail::to($user->email)->send(new SendMail($message));
-        // OrderConfirm::dispatch($message, $user->email);
-        $listOrder = Bill::where('status', 'cancelled');
-        $listCustomer = Customer::all();
+        $status_mail='';
+        $mes_content='';
+        try {
+            Mail::to($user->email)->send(new SendMail($message));
+            $status_mail='success';
+            $mes_content='Đã gửi mail xác nhận đơn hàng đến khách hàng '.$user->name; 
+        } catch (\Throwable $th) {
+            $status_mail='danger';
+            $mes_content='Lỗi hệ thống: gửi mail thất bại!';
+        }
+        
         $order->status = 'confirmed';
         $order->save();
         // dd($listOrder);
-        return redirect()->route('order.list');
+        return redirect()->route('order.list')
+        ->with(['flag' => 'success', 'notice' => $mes_content]);
     }
 
 
     public function delivering()
     {
         $listOrder = Bill::where('status', 'delivering')->get();
-        $listCustomer = Bill::all();
+        $listCustomer = Customer::all();
         // dd($listOrder);
         return view('Admin.orders.list-order')
             ->with([
@@ -97,21 +103,36 @@ class OrderController extends Controller
 
     public function setDelivering($id)
     {
-        // $order=$request->input('cancel');
         $order = Bill::find($id);
-        // dd($order);
-        $listOrder = Bill::where('status', 'cancelled');
-        $listCustomer = Customer::all();
+        $user = Customer::where('id', $order->id_customer)->first();
+        $message = [
+            'type' => 'Email thông báo ĐƠN HÀNG ĐANG GIAO',
+            'thanks' => 'Cảm ơn ' . $user->name . ' đã đặt hàng.',
+            'id_bill' => $order->id,
+            'content' => 'Đơn hàng đang giao đến vị trí bạn cung cấp. Liên hệ 0799101759 nếu bạn có bất kì vấn đề gì!',
+        ];
+        $status_mail='';
+        $mes_content='';
+        try {
+            Mail::to($user->email)->send(new SendMail($message));
+            $status_mail='success';
+            $mes_content='Đã gửi mail đơn hàng đang giao đến khách hàng '.$user->name; 
+        } catch (\Throwable $th) {
+            $status_mail='danger';
+            $mes_content='Lỗi hệ thống: gửi mail thất bại!';
+        }
+        
         $order->status = 'delivering';
         $order->save();
         // dd($listOrder);
-        return redirect()->route('order.list');
+        return redirect()->route('order.list')
+        ->with(['flag' => 'success', 'notice' => $mes_content]);
     }
 
     public function delivered()
     {
         $listOrder = Bill::where('status', 'delivered')->get();
-        $listCustomer = Bill::all();
+        $listCustomer = Customer::all();
         // dd($listOrder);
         return view('Admin.orders.list-order')
             ->with([
@@ -124,21 +145,36 @@ class OrderController extends Controller
 
     public function setDelivered($id)
     {
-        // $order=$request->input('cancel');
         $order = Bill::find($id);
-        // dd($order);
-        $listOrder = Bill::where('status', 'cancelled');
-        $listCustomer = Customer::all();
+        $user = Customer::where('id', $order->id_customer)->first();
+        $message = [
+            'type' => 'Email thông báo ĐƠN HÀNG ĐÃ ĐẾN NƠI',
+            'thanks' => 'Cảm ơn ' . $user->name . ' đã đặt hàng.',
+            'id_bill' => $order->id,
+            'content' => 'Admin đã vận chuyển đơn hàng đến vị trí bạn cung cấp. Liên hệ 0799101759 nếu bạn có bất kì vấn đề gì!',
+        ];
+        $status_mail='';
+        $mes_content='';
+        try {
+            Mail::to($user->email)->send(new SendMail($message));
+            $status_mail='success';
+            $mes_content='Đã gửi mail đơn hàng đã giao đến khách hàng '.$user->name; 
+        } catch (\Throwable $th) {
+            $status_mail='danger';
+            $mes_content='Lỗi hệ thống: gửi mail thất bại!';
+        }
+        
         $order->status = 'delivered';
         $order->save();
         // dd($listOrder);
-        return redirect()->route('order.list');
+        return redirect()->route('order.list')
+        ->with(['flag' => 'success', 'notice' => $mes_content]);
     }
 
     public function cancelled()
     {
         $listOrder = Bill::where('status', 'cancelled')->get();
-        $listCustomer = Bill::all();
+        $listCustomer = Customer::all();
         // dd($listOrder);
         return view('Admin.orders.list-order')
             ->with([
@@ -150,15 +186,30 @@ class OrderController extends Controller
     }
     public function setCancelled($id)
     {
-        // $order=$request->input('cancel');
         $order = Bill::find($id);
-        // dd($order);
-        $listOrder = Bill::where('status', 'cancelled');
-        $listCustomer = Customer::all();
+        $user = Customer::where('id', $order->id_customer)->first();
+        $message = [
+            'type' => 'Email thông báo ĐƠN HÀNG ĐÃ BỊ HỦY',
+            'thanks' => 'Cảm ơn ' . $user->name . ' đã sử dụng dịch vụ.',
+            'id_bill' => $order->id,
+            'content' => 'Admin đã hủy đơn hàng của bạn. Liên hệ 0799101759 nếu bạn có bất kì vấn đề gì!',
+        ];
+        $status_mail='';
+        $mes_content='';
+        try {
+            Mail::to($user->email)->send(new SendMail($message));
+            $status_mail='success';
+            $mes_content='Đã gửi mail đến khách hàng '.$user->name; 
+        } catch (\Throwable $th) {
+            $status_mail='danger';
+            $mes_content='Lỗi hệ thống: gửi mail thất bại!';
+        }
+        
         $order->status = 'cancelled';
         $order->save();
         // dd($listOrder);
-        return redirect()->route('order.list');
+        return redirect()->route('order.list')
+        ->with(['flag' => 'success', 'notice' => $mes_content]);
     }
 
     public function returnOrder($id)
@@ -173,4 +224,17 @@ class OrderController extends Controller
         // dd($listOrder);
         return redirect()->route('order.list');
     }
+    public function  deleted($id)
+    {
+        // $order=$request->input('cancel');
+        $order = Bill::find($id);
+        // dd($order);
+        $listOrder = Bill::where('status', 'cancelled');
+        $listCustomer = Customer::all();
+        $order->status = 'deleted';
+        $order->save();
+        // dd($listOrder);
+        return redirect()->route('order.list');
+    }
+   
 }
