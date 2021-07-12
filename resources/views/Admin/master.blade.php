@@ -83,10 +83,10 @@
                             </div>
                             <!-- /input-group -->
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
+                        </li> -->
+                        <!-- <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Category<span
                                     class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -97,9 +97,9 @@
                                     <a href="#">Add Category</a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
+                           
+                        </li> -->
+                        <!-- <li>
                             <a href="#"><i class="fa fa-cube fa-fw"></i> Product<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -108,10 +108,9 @@
                                 <li>
                                     <a href="#">Add Product</a>
                                 </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
+                            </ul> -->
+                        <!-- </li> -->
+                        <!-- <li>
                             <a href="#"><i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -121,9 +120,8 @@
                                     <a href="#">Add User</a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                        <li>
+                        </li>-->
+                        <li> 
                             <a href="{{ route('order.list') }}"><i class="fa fa-cube fa-fw"></i> Đơn Hàng<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>

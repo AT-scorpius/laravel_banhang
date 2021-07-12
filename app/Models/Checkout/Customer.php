@@ -17,4 +17,8 @@ class Customer extends Model
         'phone_number',
         'note',
     ];
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'id', 'id_customer');
+    }
 }

@@ -38,7 +38,7 @@ class AdminController extends Controller
         );
         $auth = array('email' => $request->email, 'password' => $request->password);
         if (Auth::attempt($auth)) {
-            return redirect()->route('product.list')->with(['flag' => 'success', 'notice' => 'Đăng nhập thành công']);
+            return redirect()->route('order.list')->with(['flag' => 'success', 'notice' => 'Đăng nhập thành công']);
         } else {
             return redirect()->back()->with(['flag' => 'danger', 'notice' => 'Đăng nhập không thành công! Kiểm tra lại tài khoản hoặc mật khẩu']);
         }

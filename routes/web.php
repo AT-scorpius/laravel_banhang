@@ -63,7 +63,7 @@ Route::post('admin/login', [AdminController::class, 'postLogin'])->name('admin.p
 Route::prefix('admin')->middleware(['middleware' => 'adminLogin'])->group(function () {
     Route::get('logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::any('',function(){
-        return redirect()->route('product.list');
+        return redirect()->route('order.list');
     });
     Route::prefix('product')->group(function () {
         Route::get('add', [AdminController::class, 'getAddProduct'])->name('product.add');

@@ -66,12 +66,12 @@
 
                                 <tr class="odd gradeX" align="center">
                                     <td>{{ $item['id'] }}</td>
-                                    {{-- @foreach ($listCustomer as $cus)
-                                @if ($cus['id'] == $item['id_customer'])
-                                <td>{{ $cus['name'] }}</td>
-                                @endif
-                                @endforeach --}}
-                                    <td>{{ $item['id_customer'] }}</td>
+                                    @foreach ($listCustomer as $cus)
+                                        @if ($cus['id'] == $item['id_customer'])
+                                            <td>{{ $cus['name'] }}</td>
+                                        @endif
+                                    @endforeach
+                                    {{-- <td>{{ $item['id_customer'] }}</td> --}}
                                     <td>{{ $item['date_order'] }}</td>
                                     <td>{{ $item['total'] }}</td>
                                     <td>{{ $item['payment'] }}</td>
@@ -115,7 +115,8 @@
                                         <td class="text-warning">Hiện đang trong danh sách xem!</td>
                                     @else
                                         <td class="center text-danger"><i class="fa fa-trash-o  fa-fw"></i>
-                                            <a href="{{ route('order.setCancelled', $item['id']) }}"> Cancel</a></td>
+                                            <a href="{{ route('order.setCancelled', $item['id']) }}"> Cancel</a>
+                                        </td>
                                     @endif
 
 

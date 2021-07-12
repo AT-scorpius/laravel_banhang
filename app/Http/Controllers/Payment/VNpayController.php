@@ -137,10 +137,8 @@ class VNpayController extends Controller
                 $bill_detail->unit_price = $value['price'] / $value['qty'];
                 $bill_detail->save();
             }
-
-
-            // Session::forget('cart');
-            // return view('VNPAY/vnpay_return', compact('vnpay_Data'));
+            Session::forget('cart');
+            return view('VNPAY/vnpay_return', compact('vnpay_Data'));
         }
     }
 }
